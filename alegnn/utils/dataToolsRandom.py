@@ -1562,27 +1562,27 @@ class MovieLens(_data):
             # already there, that we have the zip file and need to decompress it,
             # or that we do not have nothing and we need to download it.
             existsRawData = \
-                      os.path.isfile(os.path.join(dataDir,'ml-10m','u.data')) \
-                    and os.path.isfile(os.path.join(dataDir,'ml-10m','u.item'))
+                      os.path.isfile(os.path.join(dataDir,'ml-1m','u.data')) \
+                    and os.path.isfile(os.path.join(dataDir,'ml-1m','u.item'))
             # Actually, we're only interested in the ratings, but we're also
             # getting the movie list, just in case. Other information that we're
             # not considering at the moment includes: genres, user demographics
-            existsZipFile = os.path.isfile(os.path.join(dataDir,'ml-10m.zip'))
+            existsZipFile = os.path.isfile(os.path.join(dataDir,'ml-1m.zip'))
             if not existsRawData and not existsZipFile: # We have to download it
                 # mlURL='http://files.grouplens.org/datasets/movielens/ml-100k.zip'
-                mlURL = 'https://files.grouplens.org/datasets/movielens/ml-10m.zip'
+                mlURL = 'https://files.grouplens.org/datasets/movielens/ml-1m.zip'
                 urllib.request.urlretrieve(mlURL,
-                                 filename = os.path.join(dataDir,'ml-10m.zip'))
+                                 filename = os.path.join(dataDir,'ml-1m.zip'))
                 existsZipFile = True
             if not existsRawData and existsZipFile: # Unzip it
-                zipObject = zipfile.ZipFile(os.path.join(dataDir,'ml-10m.zip'))
+                zipObject = zipfile.ZipFile(os.path.join(dataDir,'ml-1m.zip'))
                 zipObject.extractall(dataDir)
                 zipObject.close()
             # Now that we have the data, we can get their filenames
             # rawDataFilename = os.path.join(dataDir,'ml-10m','u.data') 
-            rawDataFilename = os.path.join(dataDir,'ml-10m','ratings.dat') # Juan Changed this
+            rawDataFilename = os.path.join(dataDir,'ml-1m','ratings.dat') # Juan Changed this
             assert os.path.isfile(rawDataFilename)
-            rawMovieListFilename = os.path.join(dataDir,'ml-10m','ratings.dat') # Juan Changed this
+            rawMovieListFilename = os.path.join(dataDir,'ml-1m','movies.dat') # Juan Changed this
             assert os.path.isfile(rawMovieListFilename)
             # And we can load it and store it.
             rawMatrix = np.empty([0, 0]) # Start with an empty matrix and then
@@ -1604,7 +1604,6 @@ class MovieLens(_data):
                     # The matrix is of size Users x Movies (U x M)
                     #   We need to check whether we need to add more rows
                     #   or more columns
-                    print(rawMatrix.shape)
                     if userID > rawMatrix.shape[0]:
                         rowDiff = userID - rawMatrix.shape[0]
                         zeroPadRows = np.zeros([rowDiff, rawMatrix.shape[1]])
@@ -1624,12 +1623,14 @@ class MovieLens(_data):
             self.incompleteMatrix = rawMatrix
             # And we move to load the movie names
             
-            with open(rawMovieListFilename, 'r', encoding = "ISO-8859-1") \
-                    as rawMovieList:
+            # with open(rawMovieListFilename, 'r', encoding = "ISO-8859-1") \
+            #         as rawMovieList:
+            with open(rawMovieListFilename, 'r', encoding='latin-1') as rawMovieList:
                 # Go line by line (each line corresponds to a movie)
+                print(rawMovieList)
                 for movieLine in rawMovieList:
-                    movieLineSplit = movieLine.rstrip('\n').split('|')
-                    movieID = int(movieLineSplit[0]) - 1
+                    movieLineSplit = movieLine.rstrip('\n').split('::')
+                    movieID = int(float(movieLineSplit[0])) - 1
                     # Look that, in this case, we're making the movies ID match
                     # the column indexing (so it starts at zero)
                     movieTitle = movieLineSplit[1]
@@ -2231,7 +2232,7 @@ class MovieLens(_data):
         # made, create the graph
         # Now, we should be ready to load the data and build the (incomplete)
         # matrix
-        self.loadData('movielens10mIncompleteMatrix.pkl')
+        self.loadData('movielens1mIncompleteMatrix.pkl')
         # This has loaded the incompleteMatrix and movieTitles attributes.
 
         # First check if we might need to get rid of columns and rows to get

@@ -410,30 +410,30 @@ def MovieSmallTrain(maxNodes,NodesAddedPerEpoch,nodesInTest,nEpochs,saveFolder):
     #\\\\\\\\\\\\
     #\\\ MODEL 3: Local GNN with 1 less layer
     #\\\\\\\\\\\\
+        if do1Layer:
+            modelLclGNN1Ly = deepcopy(modelLclGNN)
 
-        modelLclGNN1Ly = deepcopy(modelLclGNN)
+            modelLclGNN1Ly['name'] += '1Ly' # Name of the architecture
 
-        modelLclGNN1Ly['name'] += '1Ly' # Name of the architecture
+            modelLclGNN1Ly['dimNodeSignals'] = modelLclGNN['dimNodeSignals'][0:-1]
+            modelLclGNN1Ly['nFilterTaps'] = modelLclGNN['nFilterTaps'][0:-1]
+            modelLclGNN1Ly['poolingSize'] = modelLclGNN['poolingSize'][0:-1]
 
-        modelLclGNN1Ly['dimNodeSignals'] = modelLclGNN['dimNodeSignals'][0:-1]
-        modelLclGNN1Ly['nFilterTaps'] = modelLclGNN['nFilterTaps'][0:-1]
-        modelLclGNN1Ly['poolingSize'] = modelLclGNN['poolingSize'][0:-1]
-
-        #\\\ Save Values:
-        writeVarValues(varsFile, modelLclGNN1Ly)
-        modelList += [modelLclGNN1Ly['name']]
+            #\\\ Save Values:
+            writeVarValues(varsFile, modelLclGNN1Ly)
+            modelList += [modelLclGNN1Ly['name']]
 
     #\\\\\\\\\\\\
     #\\\ MODEL 4: Local GNN with all Layers
     #\\\\\\\\\\\\
+        if do2Layers:
+            modelLclGNN2Ly = deepcopy(modelLclGNN)
 
-        modelLclGNN2Ly = deepcopy(modelLclGNN)
+            modelLclGNN2Ly['name'] += '2Ly' # Name of the architecture
 
-        modelLclGNN2Ly['name'] += '2Ly' # Name of the architecture
-
-        #\\\ Save Values:
-        writeVarValues(varsFile, modelLclGNN2Ly)
-        modelList += [modelLclGNN2Ly['name']]
+            #\\\ Save Values:
+            writeVarValues(varsFile, modelLclGNN2Ly)
+            modelList += [modelLclGNN2Ly['name']]
 
     ###########
     # LOGGING #

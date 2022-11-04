@@ -3,8 +3,8 @@ import plotMovie
 import datetime
 
 
-lInitialNodes  = [200,200,200,200,200,200]
-lFinalNodes = [1000,1000,1000,1000,1000,1000]
+lInitialNodes  = [1000,1000,1000,1000,1000,1000]
+lFinalNodes = [2000,2000,2000,2000,2000,2000]
 lNodesAddedPerEpoch = [50,50,50,50,50,50]
 lNodesInTest = [1100,1200,1300,1400,1500,1600]
 

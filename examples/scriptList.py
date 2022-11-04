@@ -6,7 +6,7 @@ import datetime
 lInitialNodes  = [1000,1000,1000,1000,1000,1000]
 lFinalNodes = [2000,2000,2000,2000,2000,2000]
 lNodesAddedPerEpoch = [50,50,50,50,50,50]
-lNodesInTest = [1100,1200,1300,1400,1500,1600]
+lNodesInTest = [2100,2200,2300,2400,2500,2600]
 
 for i in range(len(lInitialNodes)):
     nEpochs=(lFinalNodes[i]-lInitialNodes[i])/(lNodesAddedPerEpoch[i])+1
